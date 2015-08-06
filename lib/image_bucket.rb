@@ -33,7 +33,7 @@ class ImageBucket
   end
 
   def s3_options
-    return {} unless Rails.development?
+    return {} unless Rails.env.development?
     YAML.load_file(Rails.root.join('config', 's3.yml')).deep_symbolize_keys
   end
 end
