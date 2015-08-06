@@ -34,6 +34,7 @@ class OcrImage < ActiveRecord::Base
   def engine
     Tesseract::Engine.new do |e|
       e.language = :eng
+      e.path = '/usr/share/tesseract-ocr/tessdata' if Rails.env.production?
       e.page_segmentation_mode = 8
       e.whitelist = ((0..9).to_a + ['-']).join
     end
