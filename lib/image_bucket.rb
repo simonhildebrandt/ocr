@@ -3,7 +3,7 @@ require 'aws-sdk'
 class ImageBucket
 
   def bucket_name
-    'my-ocr-development'
+    'my-ocr-' + Rails.env
   end
 
   def put(id, file)
