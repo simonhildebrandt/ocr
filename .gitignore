@@ -16,3 +16,4 @@
 !/log/.keep
 /tmp
 config/s3.yml
+.DS_Store
