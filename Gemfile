@@ -16,8 +16,8 @@ end
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'rmagick'
 gem 'tesseract-ocr'
-
 gem 'aws-sdk'
 
 group :development, :test do

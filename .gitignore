@@ -17,3 +17,5 @@
 /tmp
 config/s3.yml
 .DS_Store
+ocr-user*
+exprots.txt

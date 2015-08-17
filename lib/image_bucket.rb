@@ -6,18 +6,26 @@ class ImageBucket
     'my-ocr-' + Rails.env
   end
 
-  def put(id, file)
+  def put(id, file, content_type)
     client.put_object(
       bucket: bucket_name,
       acl: 'public-read',
       key: id.to_s,
       body: file,
-      content_type: file.try(:content_type)
+      content_type: content_type
     )
   end
 
   def url(id)
     get(id).public_url
+  end
+
+  def content_type(id)
+    get(id).content_type
+  end
+
+  def destroy(id)
+    client.delete_object(bucket: bucket_name, key: id.to_s)
   end
 
   def body(id)

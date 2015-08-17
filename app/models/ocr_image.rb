@@ -1,10 +1,16 @@
-require 'tesseract-ocr'
 require 'image_bucket'
+require 'mime/types'
+require 'ocrable'
 
 class OcrImage < ActiveRecord::Base
 
+  include Ocrable
+
+  before_destroy :clean_up_s3
+
+
   def url
-    ImageBucket.new.url(id)
+    image_bucket.url(id)
   end
 
   def process!
@@ -13,30 +19,42 @@ class OcrImage < ActiveRecord::Base
 
   def self.upload(file)
     create!.tap do |image|
-      image.upload(file)
+      image.upload(resized_image(File.open(file.path).read), file.content_type)
     end
   end
 
-  def upload(file)
-    ImageBucket.new.put(id, file)
-  end
-
-  def file
-    ImageBucket.new.body(id)
+  def upload(file, content_type)
+    image_bucket.put(id, file, content_type)
   end
 
   private
 
-  def ocr_text_for_file
-    engine.text_for(file).strip
+  def clean_up_s3
+    image_bucket.destroy(id)
   end
 
-  def engine
-    Tesseract::Engine.new do |e|
-      e.language = :eng
-      e.path = '/usr/share/tesseract-ocr/tessdata' if Rails.env.production?
-      e.page_segmentation_mode = 8
-      e.whitelist = ((0..9).to_a + ['-']).join
-    end
+  def image
+    data
   end
+
+  def data
+    image_bucket.body(id)
+  end
+
+  def filename
+    "#{id}.#{file_extension}"
+  end
+
+  def image_bucket
+    @image_bucket ||= ImageBucket.new
+  end
+
+  def content_type
+    image_bucket.content_type(id)
+  end
+
+  def file_extension
+    MIME::Types[content_type].first.extensions.first
+  end
+
 end

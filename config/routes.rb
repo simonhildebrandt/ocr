@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
 
-  root to: 'images#new'
+  root to: 'ocr_images#new'
 
-  resources :images
+  resources :ocr_images do
+    collection do
+      post :destroy_all
+    end
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

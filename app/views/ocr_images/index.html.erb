@@ -1,0 +1,7 @@
+<%= link_to "Upload", new_ocr_image_path %>
+
+<% @images.each do |image| %>
+  <div>
+    <%= render image %>
+  </div>
+<% end %>
