@@ -4,4 +4,4 @@ This simple Rails app exposes the Tesseract OCR framework as a simple web servic
 
 == Required packages
 
-libsqlite3-dev tesseract-ocr libleptonica-dev libtesseract-dev 
+libsqlite3-dev tesseract-ocr libleptonica-dev libtesseract-dev libmagickwand-dev imagemagick
